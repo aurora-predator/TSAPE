@@ -1,0 +1,456 @@
+Fri 28 Aug 2026 11:43:11 INFO  ['sasrec_test.py']
+Fri 28 Aug 2026 11:43:11 INFO  
+General Hyper Parameters:
+gpu_id = 0
+use_gpu = True
+seed = 42
+state = INFO
+reproducibility = True
+data_path = dataset/kuairec
+checkpoint_dir = saved
+show_progress = True
+save_dataset = False
+dataset_save_path = None
+save_dataloaders = False
+dataloaders_save_path = None
+log_wandb = False
+
+Training Hyper Parameters:
+epochs = 100
+train_batch_size = 256
+learner = adam
+learning_rate = 0.001
+train_neg_sample_args = {'distribution': 'none', 'sample_num': 'none', 'alpha': 'none', 'dynamic': False, 'candidate_num': 0}
+eval_step = 1
+stopping_step = 10
+clip_grad_norm = None
+weight_decay = 0.0
+loss_decimal_place = 4
+
+Evaluation Hyper Parameters:
+eval_args = {'split': {'LS': 'valid_and_test'}, 'order': 'TO', 'group_by': 'user', 'mode': {'valid': 'full', 'test': 'full'}}
+repeatable = False
+metrics = ['Recall', 'MRR', 'NDCG', 'GAUC']
+topk = [1, 5, 10, 20]
+valid_metric = Recall@10
+valid_metric_bigger = True
+eval_batch_size = 128
+metric_decimal_place = 5
+
+Dataset Hyper Parameters:
+field_separator = 	
+seq_separator =  
+USER_ID_FIELD = user_id
+ITEM_ID_FIELD = item_id
+RATING_FIELD = rating
+TIME_FIELD = timestamp
+seq_len = None
+LABEL_FIELD = label
+threshold = None
+NEG_PREFIX = neg_
+load_col = {'inter': ['user_id', 'item_id', 'timestamp']}
+unload_col = None
+unused_col = None
+additional_feat_suffix = None
+rm_dup_inter = None
+val_interval = None
+filter_inter_by_user_or_item = True
+user_inter_num_interval = [0,inf)
+item_inter_num_interval = [0,inf)
+alias_of_user_id = None
+alias_of_item_id = None
+alias_of_entity_id = None
+alias_of_relation_id = None
+preload_weight = None
+normalize_field = None
+normalize_all = None
+ITEM_LIST_LENGTH_FIELD = item_length
+LIST_SUFFIX = _list
+MAX_ITEM_LIST_LENGTH = 50
+POSITION_FIELD = position_id
+HEAD_ENTITY_ID_FIELD = head_id
+TAIL_ENTITY_ID_FIELD = tail_id
+RELATION_ID_FIELD = relation_id
+ENTITY_ID_FIELD = entity_id
+benchmark_filename = None
+
+Other Hyper Parameters: 
+worker = 0
+wandb_project = recbole
+shuffle = True
+require_pow = False
+enable_amp = False
+enable_scaler = False
+transform = None
+numerical_features = []
+discretization = None
+kg_reverse_r = False
+entity_kg_num_interval = [0,inf)
+relation_kg_num_interval = [0,inf)
+MODEL_TYPE = ModelType.SEQUENTIAL
+initializer_range = 0.02
+filter_last_positive = False
+aug_type = 2
+n_layers = 2
+n_heads = 2
+hidden_size = 64
+inner_size = 256
+hidden_dropout_prob = 0.5
+attn_dropout_prob = 0.5
+hidden_act = gelu
+layer_norm_eps = 1e-12
+loss_type = CE
+time_list_add = True
+need_item_time_seq = False
+max_time = 3000
+time_span = 256
+MODEL_INPUT_TYPE = InputType.POINTWISE
+eval_type = EvaluatorType.RANKING
+single_spec = True
+local_rank = 0
+device = cuda
+valid_neg_sample_args = {'distribution': 'uniform', 'sample_num': 'none'}
+test_neg_sample_args = {'distribution': 'uniform', 'sample_num': 'none'}
+
+
+Fri 28 Aug 2026 11:43:14 INFO  kuairec
+The number of users: 7176
+Average actions of users: 130.50731707317073
+The number of items: 10612
+Average actions of items: 88.24710206389595
+The number of inters: 936390
+The sparsity of the dataset: 98.77036251003786%
+Remain Fields: ['user_id', 'item_id', 'timestamp']
+Fri 28 Aug 2026 11:44:03 INFO  [Training]: train_batch_size = [256] train_neg_sample_args: [{'distribution': 'none', 'sample_num': 'none', 'alpha': 'none', 'dynamic': False, 'candidate_num': 0}]
+Fri 28 Aug 2026 11:44:03 INFO  [Evaluation]: eval_batch_size = [128] eval_args: [{'split': {'LS': 'valid_and_test'}, 'order': 'TO', 'group_by': 'user', 'mode': {'valid': 'full', 'test': 'full'}}]
+Fri 28 Aug 2026 11:44:04 INFO  TMESASRec(
+  (item_embedding): Embedding(10612, 64, padding_idx=0)
+  (position_embedding): Embedding(50, 64)
+  (trm_encoder): TransformerEncoder(
+    (layer): ModuleList(
+      (0-1): 2 x TransformerLayer(
+        (multi_head_attention): MultiHeadAttention(
+          (query): Linear(in_features=64, out_features=64, bias=True)
+          (key): Linear(in_features=64, out_features=64, bias=True)
+          (value): Linear(in_features=64, out_features=64, bias=True)
+          (softmax): Softmax(dim=-1)
+          (attn_dropout): Dropout(p=0.5, inplace=False)
+          (dense): Linear(in_features=64, out_features=64, bias=True)
+          (LayerNorm): LayerNorm((64,), eps=1e-12, elementwise_affine=True)
+          (out_dropout): Dropout(p=0.5, inplace=False)
+        )
+        (feed_forward): FeedForward(
+          (dense_1): Linear(in_features=64, out_features=256, bias=True)
+          (dense_2): Linear(in_features=256, out_features=64, bias=True)
+          (LayerNorm): LayerNorm((64,), eps=1e-12, elementwise_affine=True)
+          (dropout): Dropout(p=0.5, inplace=False)
+        )
+      )
+    )
+  )
+  (time_aware_rnn): TimeAwareRNN(
+    (rnn): LSTM(1, 64, num_layers=3, batch_first=True)
+    (cnn): Sequential(
+      (0): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+      (1): GELU(approximate='none')
+      (2): Conv1d(64, 64, kernel_size=(5,), stride=(1,), padding=(2,))
+    )
+    (mlp): Sequential(
+      (0): Linear(in_features=64, out_features=64, bias=True)
+      (1): ReLU()
+      (2): Linear(in_features=64, out_features=64, bias=True)
+      (3): ReLU()
+      (4): Linear(in_features=64, out_features=64, bias=True)
+    )
+    (LayerNorm): LayerNorm((64,), eps=1e-12, elementwise_affine=True)
+    (se_block): SEBlock(
+      (fc1): Linear(in_features=64, out_features=4, bias=True)
+      (fc2): Linear(in_features=4, out_features=64, bias=True)
+      (relu): ReLU()
+      (sigmoid): Sigmoid()
+    )
+    (dropout): Dropout(p=0.5, inplace=False)
+  )
+  (user_embedding): Embedding(7176, 64)
+  (LayerNorm): LayerNorm((64,), eps=1e-12, elementwise_affine=True)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (output_projection): Linear(in_features=64, out_features=64, bias=True)
+  (loss_fct): CrossEntropyLoss()
+)
+Trainable parameters: 1375684
+Fri 28 Aug 2026 11:44:06 INFO  FLOPs: 11710376.0
+Fri 28 Aug 2026 11:45:32 INFO  epoch 0 training [time: 82.22s, train loss: 25633.4972]
+Fri 28 Aug 2026 11:45:33 INFO  epoch 0 evaluating [time: 0.86s, valid_score: 0.208570]
+Fri 28 Aug 2026 11:45:33 INFO  valid result: 
+recall@1 : 0.0466    recall@5 : 0.15583    recall@10 : 0.20857    recall@20 : 0.28502    mrr@1 : 0.0466    mrr@5 : 0.08705    mrr@10 : 0.094    mrr@20 : 0.09921    ndcg@1 : 0.0466    ndcg@5 : 0.10418    ndcg@10 : 0.12115    ndcg@20 : 0.14036    gauc : 0.94423
+Fri 28 Aug 2026 11:45:33 INFO  Saving current: saved\TMESASRec-Aug-28-2026_11-44-06.pth
+Fri 28 Aug 2026 11:46:52 INFO  epoch 1 training [time: 79.08s, train loss: 23882.6117]
+Fri 28 Aug 2026 11:46:53 INFO  epoch 1 evaluating [time: 0.59s, valid_score: 0.231310]
+Fri 28 Aug 2026 11:46:53 INFO  valid result: 
+recall@1 : 0.06069    recall@5 : 0.17397    recall@10 : 0.23131    recall@20 : 0.30636    mrr@1 : 0.06069    mrr@5 : 0.10075    mrr@10 : 0.10836    mrr@20 : 0.1135    ndcg@1 : 0.06069    ndcg@5 : 0.11889    ndcg@10 : 0.13739    ndcg@20 : 0.15628    gauc : 0.94865
+Fri 28 Aug 2026 11:46:53 INFO  Saving current: saved\TMESASRec-Aug-28-2026_11-44-06.pth
+Fri 28 Aug 2026 11:48:04 INFO  epoch 2 training [time: 70.72s, train loss: 22931.9586]
+Fri 28 Aug 2026 11:48:04 INFO  epoch 2 evaluating [time: 0.61s, valid_score: 0.248880]
+Fri 28 Aug 2026 11:48:04 INFO  valid result: 
+recall@1 : 0.07157    recall@5 : 0.18569    recall@10 : 0.24888    recall@20 : 0.3284    mrr@1 : 0.07157    mrr@5 : 0.11199    mrr@10 : 0.12036    mrr@20 : 0.12579    ndcg@1 : 0.07157    ndcg@5 : 0.13026    ndcg@10 : 0.15063    ndcg@20 : 0.17062    gauc : 0.95258
+Fri 28 Aug 2026 11:48:04 INFO  Saving current: saved\TMESASRec-Aug-28-2026_11-44-06.pth
+Fri 28 Aug 2026 11:49:21 INFO  epoch 3 training [time: 76.39s, train loss: 22174.7535]
+Fri 28 Aug 2026 11:49:21 INFO  epoch 3 evaluating [time: 0.67s, valid_score: 0.261300]
+Fri 28 Aug 2026 11:49:21 INFO  valid result: 
+recall@1 : 0.0579    recall@5 : 0.19071    recall@10 : 0.2613    recall@20 : 0.33608    mrr@1 : 0.0579    mrr@5 : 0.10542    mrr@10 : 0.11479    mrr@20 : 0.11987    ndcg@1 : 0.0579    ndcg@5 : 0.12654    ndcg@10 : 0.14932    ndcg@20 : 0.16809    gauc : 0.95396
+Fri 28 Aug 2026 11:49:21 INFO  Saving current: saved\TMESASRec-Aug-28-2026_11-44-06.pth
+Fri 28 Aug 2026 11:50:39 INFO  epoch 4 training [time: 78.03s, train loss: 21941.8438]
+Fri 28 Aug 2026 11:50:40 INFO  epoch 4 evaluating [time: 0.63s, valid_score: 0.258510]
+Fri 28 Aug 2026 11:50:40 INFO  valid result: 
+recall@1 : 0.07868    recall@5 : 0.19169    recall@10 : 0.25851    recall@20 : 0.33887    mrr@1 : 0.07868    mrr@5 : 0.11751    mrr@10 : 0.12637    mrr@20 : 0.13191    ndcg@1 : 0.07868    ndcg@5 : 0.13584    ndcg@10 : 0.15739    ndcg@20 : 0.17765    gauc : 0.95491
+Fri 28 Aug 2026 11:51:58 INFO  epoch 5 training [time: 77.67s, train loss: 21798.3380]
+Fri 28 Aug 2026 11:51:58 INFO  epoch 5 evaluating [time: 0.65s, valid_score: 0.253350]
+Fri 28 Aug 2026 11:51:58 INFO  valid result: 
+recall@1 : 0.06961    recall@5 : 0.19043    recall@10 : 0.25335    recall@20 : 0.33022    mrr@1 : 0.06961    mrr@5 : 0.11375    mrr@10 : 0.1221    mrr@20 : 0.12745    ndcg@1 : 0.06961    ndcg@5 : 0.13283    ndcg@10 : 0.15312    ndcg@20 : 0.17258    gauc : 0.95415
+Fri 28 Aug 2026 11:53:17 INFO  epoch 6 training [time: 78.59s, train loss: 21707.6859]
+Fri 28 Aug 2026 11:53:18 INFO  epoch 6 evaluating [time: 0.67s, valid_score: 0.262140]
+Fri 28 Aug 2026 11:53:18 INFO  valid result: 
+recall@1 : 0.07129    recall@5 : 0.19266    recall@10 : 0.26214    recall@20 : 0.34305    mrr@1 : 0.07129    mrr@5 : 0.11386    mrr@10 : 0.12318    mrr@20 : 0.12878    ndcg@1 : 0.07129    ndcg@5 : 0.13337    ndcg@10 : 0.15588    ndcg@20 : 0.17633    gauc : 0.95471
+Fri 28 Aug 2026 11:53:18 INFO  Saving current: saved\TMESASRec-Aug-28-2026_11-44-06.pth
+Fri 28 Aug 2026 11:54:36 INFO  epoch 7 training [time: 78.07s, train loss: 21630.4683]
+Fri 28 Aug 2026 11:54:36 INFO  epoch 7 evaluating [time: 0.66s, valid_score: 0.267300]
+Fri 28 Aug 2026 11:54:36 INFO  valid result: 
+recall@1 : 0.07478    recall@5 : 0.20117    recall@10 : 0.2673    recall@20 : 0.34612    mrr@1 : 0.07478    mrr@5 : 0.11983    mrr@10 : 0.12853    mrr@20 : 0.13399    ndcg@1 : 0.07478    ndcg@5 : 0.14    ndcg@10 : 0.16126    ndcg@20 : 0.18117    gauc : 0.95525
+Fri 28 Aug 2026 11:54:36 INFO  Saving current: saved\TMESASRec-Aug-28-2026_11-44-06.pth
+Fri 28 Aug 2026 11:55:54 INFO  epoch 8 training [time: 78.06s, train loss: 21567.9097]
+Fri 28 Aug 2026 11:55:55 INFO  epoch 8 evaluating [time: 0.64s, valid_score: 0.255860]
+Fri 28 Aug 2026 11:55:55 INFO  valid result: 
+recall@1 : 0.06613    recall@5 : 0.18638    recall@10 : 0.25586    recall@20 : 0.34528    mrr@1 : 0.06613    mrr@5 : 0.10791    mrr@10 : 0.11719    mrr@20 : 0.12333    ndcg@1 : 0.06613    ndcg@5 : 0.12732    ndcg@10 : 0.14979    ndcg@20 : 0.17232    gauc : 0.95501
+Fri 28 Aug 2026 11:57:13 INFO  epoch 9 training [time: 77.68s, train loss: 21514.4995]
+Fri 28 Aug 2026 11:57:13 INFO  epoch 9 evaluating [time: 0.65s, valid_score: 0.270510]
+Fri 28 Aug 2026 11:57:13 INFO  valid result: 
+recall@1 : 0.07394    recall@5 : 0.19531    recall@10 : 0.27051    recall@20 : 0.34668    mrr@1 : 0.07394    mrr@5 : 0.11764    mrr@10 : 0.12753    mrr@20 : 0.1328    ndcg@1 : 0.07394    ndcg@5 : 0.13693    ndcg@10 : 0.16111    ndcg@20 : 0.18034    gauc : 0.956
+Fri 28 Aug 2026 11:57:13 INFO  Saving current: saved\TMESASRec-Aug-28-2026_11-44-06.pth
+Fri 28 Aug 2026 11:58:31 INFO  epoch 10 training [time: 77.82s, train loss: 21470.2907]
+Fri 28 Aug 2026 11:58:32 INFO  epoch 10 evaluating [time: 0.66s, valid_score: 0.265760]
+Fri 28 Aug 2026 11:58:32 INFO  valid result: 
+recall@1 : 0.0791    recall@5 : 0.19796    recall@10 : 0.26576    recall@20 : 0.35212    mrr@1 : 0.0791    mrr@5 : 0.1211    mrr@10 : 0.13016    mrr@20 : 0.1361    ndcg@1 : 0.0791    ndcg@5 : 0.14013    ndcg@10 : 0.16207    ndcg@20 : 0.18384    gauc : 0.95543
+Fri 28 Aug 2026 11:59:51 INFO  epoch 11 training [time: 78.77s, train loss: 21434.0457]
+Fri 28 Aug 2026 11:59:51 INFO  epoch 11 evaluating [time: 0.66s, valid_score: 0.273160]
+Fri 28 Aug 2026 11:59:51 INFO  valid result: 
+recall@1 : 0.07715    recall@5 : 0.19727    recall@10 : 0.27316    recall@20 : 0.3517    mrr@1 : 0.07715    mrr@5 : 0.11923    mrr@10 : 0.12939    mrr@20 : 0.1348    ndcg@1 : 0.07715    ndcg@5 : 0.13854    ndcg@10 : 0.16311    ndcg@20 : 0.18292    gauc : 0.95617
+Fri 28 Aug 2026 11:59:51 INFO  Saving current: saved\TMESASRec-Aug-28-2026_11-44-06.pth
+Fri 28 Aug 2026 12:01:09 INFO  epoch 12 training [time: 78.12s, train loss: 21405.4763]
+Fri 28 Aug 2026 12:01:10 INFO  epoch 12 evaluating [time: 0.66s, valid_score: 0.258650]
+Fri 28 Aug 2026 12:01:10 INFO  valid result: 
+recall@1 : 0.06738    recall@5 : 0.18652    recall@10 : 0.25865    recall@20 : 0.34919    mrr@1 : 0.06738    mrr@5 : 0.11004    mrr@10 : 0.11952    mrr@20 : 0.12578    ndcg@1 : 0.06738    ndcg@5 : 0.12901    ndcg@10 : 0.15219    ndcg@20 : 0.17504    gauc : 0.95568
+Fri 28 Aug 2026 12:02:28 INFO  epoch 13 training [time: 77.71s, train loss: 21371.3159]
+Fri 28 Aug 2026 12:02:28 INFO  epoch 13 evaluating [time: 0.64s, valid_score: 0.270790]
+Fri 28 Aug 2026 12:02:28 INFO  valid result: 
+recall@1 : 0.07785    recall@5 : 0.19936    recall@10 : 0.27079    recall@20 : 0.35854    mrr@1 : 0.07785    mrr@5 : 0.12127    mrr@10 : 0.1308    mrr@20 : 0.13693    ndcg@1 : 0.07785    ndcg@5 : 0.14063    ndcg@10 : 0.16372    ndcg@20 : 0.18596    gauc : 0.9563
+Fri 28 Aug 2026 12:03:46 INFO  epoch 14 training [time: 77.85s, train loss: 21346.5915]
+Fri 28 Aug 2026 12:03:47 INFO  epoch 14 evaluating [time: 0.65s, valid_score: 0.262970]
+Fri 28 Aug 2026 12:03:47 INFO  valid result: 
+recall@1 : 0.07143    recall@5 : 0.19489    recall@10 : 0.26297    recall@20 : 0.34933    mrr@1 : 0.07143    mrr@5 : 0.11481    mrr@10 : 0.12383    mrr@20 : 0.12977    ndcg@1 : 0.07143    ndcg@5 : 0.13461    ndcg@10 : 0.15656    ndcg@20 : 0.17833    gauc : 0.95629
+Fri 28 Aug 2026 12:05:05 INFO  epoch 15 training [time: 78.31s, train loss: 21321.6438]
+Fri 28 Aug 2026 12:05:06 INFO  epoch 15 evaluating [time: 0.64s, valid_score: 0.273020]
+Fri 28 Aug 2026 12:05:06 INFO  valid result: 
+recall@1 : 0.07854    recall@5 : 0.20689    recall@10 : 0.27302    recall@20 : 0.35421    mrr@1 : 0.07854    mrr@5 : 0.12367    mrr@10 : 0.13236    mrr@20 : 0.13799    ndcg@1 : 0.07854    ndcg@5 : 0.14428    ndcg@10 : 0.16552    ndcg@20 : 0.18605    gauc : 0.95703
+Fri 28 Aug 2026 12:06:25 INFO  epoch 16 training [time: 78.70s, train loss: 21297.9120]
+Fri 28 Aug 2026 12:06:25 INFO  epoch 16 evaluating [time: 0.69s, valid_score: 0.262970]
+Fri 28 Aug 2026 12:06:25 INFO  valid result: 
+recall@1 : 0.07492    recall@5 : 0.19294    recall@10 : 0.26297    recall@20 : 0.34319    mrr@1 : 0.07492    mrr@5 : 0.11727    mrr@10 : 0.12647    mrr@20 : 0.13201    ndcg@1 : 0.07492    ndcg@5 : 0.13605    ndcg@10 : 0.15855    ndcg@20 : 0.17881    gauc : 0.95604
+Fri 28 Aug 2026 12:07:44 INFO  epoch 17 training [time: 78.61s, train loss: 21274.8054]
+Fri 28 Aug 2026 12:07:45 INFO  epoch 17 evaluating [time: 0.64s, valid_score: 0.269670]
+Fri 28 Aug 2026 12:07:45 INFO  valid result: 
+recall@1 : 0.07143    recall@5 : 0.19573    recall@10 : 0.26967    recall@20 : 0.35184    mrr@1 : 0.07143    mrr@5 : 0.1145    mrr@10 : 0.12439    mrr@20 : 0.13005    ndcg@1 : 0.07143    ndcg@5 : 0.13457    ndcg@10 : 0.1585    ndcg@20 : 0.17923    gauc : 0.95574
+Fri 28 Aug 2026 12:09:02 INFO  epoch 18 training [time: 77.59s, train loss: 21255.8354]
+Fri 28 Aug 2026 12:09:03 INFO  epoch 18 evaluating [time: 0.65s, valid_score: 0.273440]
+Fri 28 Aug 2026 12:09:03 INFO  valid result: 
+recall@1 : 0.07171    recall@5 : 0.20089    recall@10 : 0.27344    recall@20 : 0.357    mrr@1 : 0.07171    mrr@5 : 0.11789    mrr@10 : 0.1274    mrr@20 : 0.13328    ndcg@1 : 0.07171    ndcg@5 : 0.13847    ndcg@10 : 0.16175    ndcg@20 : 0.18298    gauc : 0.956
+Fri 28 Aug 2026 12:09:03 INFO  Saving current: saved\TMESASRec-Aug-28-2026_11-44-06.pth
+Fri 28 Aug 2026 12:10:21 INFO  epoch 19 training [time: 77.89s, train loss: 21239.2008]
+Fri 28 Aug 2026 12:10:21 INFO  epoch 19 evaluating [time: 0.66s, valid_score: 0.257530]
+Fri 28 Aug 2026 12:10:21 INFO  valid result: 
+recall@1 : 0.0692    recall@5 : 0.18778    recall@10 : 0.25753    recall@20 : 0.34556    mrr@1 : 0.0692    mrr@5 : 0.1114    mrr@10 : 0.12063    mrr@20 : 0.12671    ndcg@1 : 0.0692    ndcg@5 : 0.13033    ndcg@10 : 0.15281    ndcg@20 : 0.17503    gauc : 0.95556
+Fri 28 Aug 2026 12:11:40 INFO  epoch 20 training [time: 78.42s, train loss: 21223.2466]
+Fri 28 Aug 2026 12:11:41 INFO  epoch 20 evaluating [time: 0.64s, valid_score: 0.272880]
+Fri 28 Aug 2026 12:11:41 INFO  valid result: 
+recall@1 : 0.07129    recall@5 : 0.19364    recall@10 : 0.27288    recall@20 : 0.35449    mrr@1 : 0.07129    mrr@5 : 0.11547    mrr@10 : 0.12593    mrr@20 : 0.13152    ndcg@1 : 0.07129    ndcg@5 : 0.13488    ndcg@10 : 0.16038    ndcg@20 : 0.18093    gauc : 0.9567
+Fri 28 Aug 2026 12:12:59 INFO  epoch 21 training [time: 78.43s, train loss: 21204.4526]
+Fri 28 Aug 2026 12:13:00 INFO  epoch 21 evaluating [time: 0.68s, valid_score: 0.271760]
+Fri 28 Aug 2026 12:13:00 INFO  valid result: 
+recall@1 : 0.07366    recall@5 : 0.20117    recall@10 : 0.27176    recall@20 : 0.35672    mrr@1 : 0.07366    mrr@5 : 0.11971    mrr@10 : 0.12912    mrr@20 : 0.13497    ndcg@1 : 0.07366    ndcg@5 : 0.13993    ndcg@10 : 0.16274    ndcg@20 : 0.18417    gauc : 0.95602
+Fri 28 Aug 2026 12:14:18 INFO  epoch 22 training [time: 78.22s, train loss: 21190.8211]
+Fri 28 Aug 2026 12:14:19 INFO  epoch 22 evaluating [time: 0.65s, valid_score: 0.270650]
+Fri 28 Aug 2026 12:14:19 INFO  valid result: 
+recall@1 : 0.07157    recall@5 : 0.19866    recall@10 : 0.27065    recall@20 : 0.36035    mrr@1 : 0.07157    mrr@5 : 0.11666    mrr@10 : 0.12632    mrr@20 : 0.13254    ndcg@1 : 0.07157    ndcg@5 : 0.13697    ndcg@10 : 0.1603    ndcg@20 : 0.18297    gauc : 0.95682
+Fri 28 Aug 2026 12:15:36 INFO  epoch 23 training [time: 77.77s, train loss: 21176.6444]
+Fri 28 Aug 2026 12:15:37 INFO  epoch 23 evaluating [time: 0.65s, valid_score: 0.275530]
+Fri 28 Aug 2026 12:15:37 INFO  valid result: 
+recall@1 : 0.07366    recall@5 : 0.20243    recall@10 : 0.27553    recall@20 : 0.3577    mrr@1 : 0.07366    mrr@5 : 0.1186    mrr@10 : 0.12843    mrr@20 : 0.13408    ndcg@1 : 0.07366    ndcg@5 : 0.13931    ndcg@10 : 0.16302    ndcg@20 : 0.18374    gauc : 0.9566
+Fri 28 Aug 2026 12:15:37 INFO  Saving current: saved\TMESASRec-Aug-28-2026_11-44-06.pth
+Fri 28 Aug 2026 12:16:55 INFO  epoch 24 training [time: 77.69s, train loss: 21166.9854]
+Fri 28 Aug 2026 12:16:55 INFO  epoch 24 evaluating [time: 0.66s, valid_score: 0.269670]
+Fri 28 Aug 2026 12:16:55 INFO  valid result: 
+recall@1 : 0.07492    recall@5 : 0.2002    recall@10 : 0.26967    recall@20 : 0.35352    mrr@1 : 0.07492    mrr@5 : 0.12014    mrr@10 : 0.1292    mrr@20 : 0.13502    ndcg@1 : 0.07492    ndcg@5 : 0.14001    ndcg@10 : 0.16226    ndcg@20 : 0.18346    gauc : 0.95645
+Fri 28 Aug 2026 12:18:13 INFO  epoch 25 training [time: 78.06s, train loss: 21153.2968]
+Fri 28 Aug 2026 12:18:14 INFO  epoch 25 evaluating [time: 0.65s, valid_score: 0.268970]
+Fri 28 Aug 2026 12:18:14 INFO  valid result: 
+recall@1 : 0.07659    recall@5 : 0.19601    recall@10 : 0.26897    recall@20 : 0.35338    mrr@1 : 0.07659    mrr@5 : 0.11858    mrr@10 : 0.12823    mrr@20 : 0.13414    ndcg@1 : 0.07659    ndcg@5 : 0.13774    ndcg@10 : 0.16125    ndcg@20 : 0.18266    gauc : 0.95563
+Fri 28 Aug 2026 12:19:31 INFO  epoch 26 training [time: 77.39s, train loss: 21141.7277]
+Fri 28 Aug 2026 12:19:32 INFO  epoch 26 evaluating [time: 0.68s, valid_score: 0.262970]
+Fri 28 Aug 2026 12:19:32 INFO  valid result: 
+recall@1 : 0.07171    recall@5 : 0.18792    recall@10 : 0.26297    recall@20 : 0.34863    mrr@1 : 0.07171    mrr@5 : 0.11264    mrr@10 : 0.12264    mrr@20 : 0.12862    ndcg@1 : 0.07171    ndcg@5 : 0.13127    ndcg@10 : 0.15551    ndcg@20 : 0.17722    gauc : 0.95539
+Fri 28 Aug 2026 12:20:50 INFO  epoch 27 training [time: 77.62s, train loss: 21132.2721]
+Fri 28 Aug 2026 12:20:50 INFO  epoch 27 evaluating [time: 0.64s, valid_score: 0.272180]
+Fri 28 Aug 2026 12:20:50 INFO  valid result: 
+recall@1 : 0.07868    recall@5 : 0.19796    recall@10 : 0.27218    recall@20 : 0.35254    mrr@1 : 0.07868    mrr@5 : 0.12162    mrr@10 : 0.1315    mrr@20 : 0.13706    ndcg@1 : 0.07868    ndcg@5 : 0.14058    ndcg@10 : 0.16455    ndcg@20 : 0.18485    gauc : 0.95618
+Fri 28 Aug 2026 12:22:11 INFO  epoch 28 training [time: 80.81s, train loss: 21120.3436]
+Fri 28 Aug 2026 12:22:12 INFO  epoch 28 evaluating [time: 0.80s, valid_score: 0.272180]
+Fri 28 Aug 2026 12:22:12 INFO  valid result: 
+recall@1 : 0.07826    recall@5 : 0.19852    recall@10 : 0.27218    recall@20 : 0.35826    mrr@1 : 0.07826    mrr@5 : 0.12076    mrr@10 : 0.13053    mrr@20 : 0.13641    ndcg@1 : 0.07826    ndcg@5 : 0.14001    ndcg@10 : 0.16377    ndcg@20 : 0.18541    gauc : 0.95681
+Fri 28 Aug 2026 12:23:40 INFO  epoch 29 training [time: 87.90s, train loss: 21110.8277]
+Fri 28 Aug 2026 12:23:41 INFO  epoch 29 evaluating [time: 0.71s, valid_score: 0.269950]
+Fri 28 Aug 2026 12:23:41 INFO  valid result: 
+recall@1 : 0.07031    recall@5 : 0.19908    recall@10 : 0.26995    recall@20 : 0.35184    mrr@1 : 0.07031    mrr@5 : 0.11615    mrr@10 : 0.1254    mrr@20 : 0.13113    ndcg@1 : 0.07031    ndcg@5 : 0.13671    ndcg@10 : 0.15942    ndcg@20 : 0.18018    gauc : 0.95603
+Fri 28 Aug 2026 12:25:02 INFO  epoch 30 training [time: 81.32s, train loss: 21099.0227]
+Fri 28 Aug 2026 12:25:03 INFO  epoch 30 evaluating [time: 0.68s, valid_score: 0.270510]
+Fri 28 Aug 2026 12:25:03 INFO  valid result: 
+recall@1 : 0.07687    recall@5 : 0.20089    recall@10 : 0.27051    recall@20 : 0.36007    mrr@1 : 0.07687    mrr@5 : 0.12139    mrr@10 : 0.13062    mrr@20 : 0.13669    ndcg@1 : 0.07687    ndcg@5 : 0.14112    ndcg@10 : 0.16358    ndcg@20 : 0.18603    gauc : 0.95577
+Fri 28 Aug 2026 12:26:22 INFO  epoch 31 training [time: 79.34s, train loss: 21093.7573]
+Fri 28 Aug 2026 12:26:23 INFO  epoch 31 evaluating [time: 0.66s, valid_score: 0.268420]
+Fri 28 Aug 2026 12:26:23 INFO  valid result: 
+recall@1 : 0.07603    recall@5 : 0.19308    recall@10 : 0.26842    recall@20 : 0.35003    mrr@1 : 0.07603    mrr@5 : 0.11747    mrr@10 : 0.12753    mrr@20 : 0.13311    ndcg@1 : 0.07603    ndcg@5 : 0.1362    ndcg@10 : 0.16056    ndcg@20 : 0.18109    gauc : 0.95561
+Fri 28 Aug 2026 12:27:42 INFO  epoch 32 training [time: 79.65s, train loss: 21084.7665]
+Fri 28 Aug 2026 12:27:43 INFO  epoch 32 evaluating [time: 0.69s, valid_score: 0.268830]
+Fri 28 Aug 2026 12:27:43 INFO  valid result: 
+recall@1 : 0.07059    recall@5 : 0.19503    recall@10 : 0.26883    recall@20 : 0.35198    mrr@1 : 0.07059    mrr@5 : 0.11416    mrr@10 : 0.12398    mrr@20 : 0.12969    ndcg@1 : 0.07059    ndcg@5 : 0.13415    ndcg@10 : 0.15798    ndcg@20 : 0.17893    gauc : 0.95626
+Fri 28 Aug 2026 12:29:05 INFO  epoch 33 training [time: 81.66s, train loss: 21073.0176]
+Fri 28 Aug 2026 12:29:05 INFO  epoch 33 evaluating [time: 0.67s, valid_score: 0.277200]
+Fri 28 Aug 2026 12:29:05 INFO  valid result: 
+recall@1 : 0.07994    recall@5 : 0.20312    recall@10 : 0.2772    recall@20 : 0.36147    mrr@1 : 0.07994    mrr@5 : 0.12462    mrr@10 : 0.13441    mrr@20 : 0.14011    ndcg@1 : 0.07994    ndcg@5 : 0.14411    ndcg@10 : 0.16798    ndcg@20 : 0.1891    gauc : 0.95654
+Fri 28 Aug 2026 12:29:05 INFO  Saving current: saved\TMESASRec-Aug-28-2026_11-44-06.pth
+Fri 28 Aug 2026 12:30:31 INFO  epoch 34 training [time: 85.24s, train loss: 21065.7740]
+Fri 28 Aug 2026 12:30:31 INFO  epoch 34 evaluating [time: 0.68s, valid_score: 0.265070]
+Fri 28 Aug 2026 12:30:31 INFO  valid result: 
+recall@1 : 0.07771    recall@5 : 0.19475    recall@10 : 0.26507    recall@20 : 0.34668    mrr@1 : 0.07771    mrr@5 : 0.11963    mrr@10 : 0.12889    mrr@20 : 0.13463    ndcg@1 : 0.07771    ndcg@5 : 0.13826    ndcg@10 : 0.16087    ndcg@20 : 0.1816    gauc : 0.95524
+Fri 28 Aug 2026 12:31:52 INFO  epoch 35 training [time: 80.54s, train loss: 21060.2082]
+Fri 28 Aug 2026 12:31:52 INFO  epoch 35 evaluating [time: 0.66s, valid_score: 0.273300]
+Fri 28 Aug 2026 12:31:52 INFO  valid result: 
+recall@1 : 0.0784    recall@5 : 0.20285    recall@10 : 0.2733    recall@20 : 0.357    mrr@1 : 0.0784    mrr@5 : 0.12271    mrr@10 : 0.13204    mrr@20 : 0.13787    ndcg@1 : 0.0784    ndcg@5 : 0.14256    ndcg@10 : 0.16527    ndcg@20 : 0.18646    gauc : 0.95611
+Fri 28 Aug 2026 12:33:11 INFO  epoch 36 training [time: 78.59s, train loss: 21048.4586]
+Fri 28 Aug 2026 12:33:12 INFO  epoch 36 evaluating [time: 0.70s, valid_score: 0.269390]
+Fri 28 Aug 2026 12:33:12 INFO  valid result: 
+recall@1 : 0.07812    recall@5 : 0.20326    recall@10 : 0.26939    recall@20 : 0.35896    mrr@1 : 0.07812    mrr@5 : 0.12239    mrr@10 : 0.13119    mrr@20 : 0.13735    ndcg@1 : 0.07812    ndcg@5 : 0.14243    ndcg@10 : 0.16379    ndcg@20 : 0.18637    gauc : 0.95604
+Fri 28 Aug 2026 12:34:29 INFO  epoch 37 training [time: 77.43s, train loss: 21043.8925]
+Fri 28 Aug 2026 12:34:30 INFO  epoch 37 evaluating [time: 0.65s, valid_score: 0.273440]
+Fri 28 Aug 2026 12:34:30 INFO  valid result: 
+recall@1 : 0.07952    recall@5 : 0.20131    recall@10 : 0.27344    recall@20 : 0.35798    mrr@1 : 0.07952    mrr@5 : 0.12244    mrr@10 : 0.13208    mrr@20 : 0.13794    ndcg@1 : 0.07952    ndcg@5 : 0.14196    ndcg@10 : 0.1653    ndcg@20 : 0.18666    gauc : 0.95637
+Fri 28 Aug 2026 12:35:51 INFO  epoch 38 training [time: 81.17s, train loss: 21036.3213]
+Fri 28 Aug 2026 12:35:52 INFO  epoch 38 evaluating [time: 0.66s, valid_score: 0.271760]
+Fri 28 Aug 2026 12:35:52 INFO  valid result: 
+recall@1 : 0.07561    recall@5 : 0.20075    recall@10 : 0.27176    recall@20 : 0.35854    mrr@1 : 0.07561    mrr@5 : 0.11995    mrr@10 : 0.12929    mrr@20 : 0.13531    ndcg@1 : 0.07561    ndcg@5 : 0.13996    ndcg@10 : 0.16279    ndcg@20 : 0.18472    gauc : 0.95658
+Fri 28 Aug 2026 12:37:11 INFO  epoch 39 training [time: 79.06s, train loss: 21024.8594]
+Fri 28 Aug 2026 12:37:11 INFO  epoch 39 evaluating [time: 0.67s, valid_score: 0.260180]
+Fri 28 Aug 2026 12:37:11 INFO  valid result: 
+recall@1 : 0.07003    recall@5 : 0.18903    recall@10 : 0.26018    recall@20 : 0.34375    mrr@1 : 0.07003    mrr@5 : 0.11192    mrr@10 : 0.12138    mrr@20 : 0.12718    ndcg@1 : 0.07003    ndcg@5 : 0.13101    ndcg@10 : 0.15397    ndcg@20 : 0.17511    gauc : 0.9553
+Fri 28 Aug 2026 12:38:32 INFO  epoch 40 training [time: 80.76s, train loss: 21021.3081]
+Fri 28 Aug 2026 12:38:33 INFO  epoch 40 evaluating [time: 0.69s, valid_score: 0.265210]
+Fri 28 Aug 2026 12:38:33 INFO  valid result: 
+recall@1 : 0.07589    recall@5 : 0.19475    recall@10 : 0.26521    recall@20 : 0.34528    mrr@1 : 0.07589    mrr@5 : 0.11724    mrr@10 : 0.1266    mrr@20 : 0.13216    ndcg@1 : 0.07589    ndcg@5 : 0.1364    ndcg@10 : 0.15914    ndcg@20 : 0.17939    gauc : 0.95528
+Fri 28 Aug 2026 12:39:52 INFO  epoch 41 training [time: 78.69s, train loss: 21009.2538]
+Fri 28 Aug 2026 12:39:52 INFO  epoch 41 evaluating [time: 0.66s, valid_score: 0.270510]
+Fri 28 Aug 2026 12:39:52 INFO  valid result: 
+recall@1 : 0.07603    recall@5 : 0.20201    recall@10 : 0.27051    recall@20 : 0.35366    mrr@1 : 0.07603    mrr@5 : 0.12101    mrr@10 : 0.13007    mrr@20 : 0.1358    ndcg@1 : 0.07603    ndcg@5 : 0.1411    ndcg@10 : 0.16317    ndcg@20 : 0.18414    gauc : 0.95632
+Fri 28 Aug 2026 12:41:11 INFO  epoch 42 training [time: 78.69s, train loss: 21003.0496]
+Fri 28 Aug 2026 12:41:12 INFO  epoch 42 evaluating [time: 0.65s, valid_score: 0.271620]
+Fri 28 Aug 2026 12:41:12 INFO  valid result: 
+recall@1 : 0.07729    recall@5 : 0.19741    recall@10 : 0.27162    recall@20 : 0.35491    mrr@1 : 0.07729    mrr@5 : 0.1203    mrr@10 : 0.1302    mrr@20 : 0.1359    ndcg@1 : 0.07729    ndcg@5 : 0.13943    ndcg@10 : 0.16343    ndcg@20 : 0.18438    gauc : 0.95604
+Fri 28 Aug 2026 12:42:30 INFO  epoch 43 training [time: 78.83s, train loss: 20999.1419]
+Fri 28 Aug 2026 12:42:31 INFO  epoch 43 evaluating [time: 0.69s, valid_score: 0.281530]
+Fri 28 Aug 2026 12:42:31 INFO  valid result: 
+recall@1 : 0.07924    recall@5 : 0.20271    recall@10 : 0.28153    recall@20 : 0.363    mrr@1 : 0.07924    mrr@5 : 0.12341    mrr@10 : 0.13371    mrr@20 : 0.1394    ndcg@1 : 0.07924    ndcg@5 : 0.14307    ndcg@10 : 0.16834    ndcg@20 : 0.18898    gauc : 0.95645
+Fri 28 Aug 2026 12:42:31 INFO  Saving current: saved\TMESASRec-Aug-28-2026_11-44-06.pth
+Fri 28 Aug 2026 12:43:49 INFO  epoch 44 training [time: 78.06s, train loss: 20991.3068]
+Fri 28 Aug 2026 12:43:50 INFO  epoch 44 evaluating [time: 0.74s, valid_score: 0.273860]
+Fri 28 Aug 2026 12:43:50 INFO  valid result: 
+recall@1 : 0.08217    recall@5 : 0.20312    recall@10 : 0.27386    recall@20 : 0.357    mrr@1 : 0.08217    mrr@5 : 0.12583    mrr@10 : 0.13523    mrr@20 : 0.14091    ndcg@1 : 0.08217    ndcg@5 : 0.14503    ndcg@10 : 0.16785    ndcg@20 : 0.18877    gauc : 0.95531
+Fri 28 Aug 2026 12:45:12 INFO  epoch 45 training [time: 82.48s, train loss: 20982.7718]
+Fri 28 Aug 2026 12:45:13 INFO  epoch 45 evaluating [time: 0.70s, valid_score: 0.254880]
+Fri 28 Aug 2026 12:45:13 INFO  valid result: 
+recall@1 : 0.06515    recall@5 : 0.18638    recall@10 : 0.25488    recall@20 : 0.33998    mrr@1 : 0.06515    mrr@5 : 0.10864    mrr@10 : 0.11753    mrr@20 : 0.12339    ndcg@1 : 0.06515    ndcg@5 : 0.12792    ndcg@10 : 0.14982    ndcg@20 : 0.17128    gauc : 0.95377
+Fri 28 Aug 2026 12:46:40 INFO  epoch 46 training [time: 86.54s, train loss: 20982.1002]
+Fri 28 Aug 2026 12:46:40 INFO  epoch 46 evaluating [time: 0.69s, valid_score: 0.267860]
+Fri 28 Aug 2026 12:46:40 INFO  valid result: 
+recall@1 : 0.07603    recall@5 : 0.19922    recall@10 : 0.26786    recall@20 : 0.34919    mrr@1 : 0.07603    mrr@5 : 0.11996    mrr@10 : 0.12901    mrr@20 : 0.1346    ndcg@1 : 0.07603    ndcg@5 : 0.1396    ndcg@10 : 0.16168    ndcg@20 : 0.18219    gauc : 0.9557
+Fri 28 Aug 2026 12:48:07 INFO  epoch 47 training [time: 87.03s, train loss: 20969.6959]
+Fri 28 Aug 2026 12:48:08 INFO  epoch 47 evaluating [time: 0.80s, valid_score: 0.261860]
+Fri 28 Aug 2026 12:48:08 INFO  valid result: 
+recall@1 : 0.07157    recall@5 : 0.19169    recall@10 : 0.26186    recall@20 : 0.34584    mrr@1 : 0.07157    mrr@5 : 0.11409    mrr@10 : 0.12343    mrr@20 : 0.12924    ndcg@1 : 0.07157    ndcg@5 : 0.13329    ndcg@10 : 0.15597    ndcg@20 : 0.17717    gauc : 0.95484
+Fri 28 Aug 2026 12:49:36 INFO  epoch 48 training [time: 87.42s, train loss: 20969.0274]
+Fri 28 Aug 2026 12:49:36 INFO  epoch 48 evaluating [time: 0.70s, valid_score: 0.268970]
+Fri 28 Aug 2026 12:49:36 INFO  valid result: 
+recall@1 : 0.07701    recall@5 : 0.19922    recall@10 : 0.26897    recall@20 : 0.35421    mrr@1 : 0.07701    mrr@5 : 0.12003    mrr@10 : 0.12937    mrr@20 : 0.13519    ndcg@1 : 0.07701    ndcg@5 : 0.13962    ndcg@10 : 0.16221    ndcg@20 : 0.18364    gauc : 0.95546
+Fri 28 Aug 2026 12:51:02 INFO  epoch 49 training [time: 85.60s, train loss: 20967.3375]
+Fri 28 Aug 2026 12:51:03 INFO  epoch 49 evaluating [time: 0.67s, valid_score: 0.270090]
+Fri 28 Aug 2026 12:51:03 INFO  valid result: 
+recall@1 : 0.07812    recall@5 : 0.19587    recall@10 : 0.27009    recall@20 : 0.35254    mrr@1 : 0.07812    mrr@5 : 0.12014    mrr@10 : 0.13003    mrr@20 : 0.13569    ndcg@1 : 0.07812    ndcg@5 : 0.13891    ndcg@10 : 0.1629    ndcg@20 : 0.18367    gauc : 0.95538
+Fri 28 Aug 2026 12:52:29 INFO  epoch 50 training [time: 86.35s, train loss: 20957.3050]
+Fri 28 Aug 2026 12:52:30 INFO  epoch 50 evaluating [time: 0.73s, valid_score: 0.281810]
+Fri 28 Aug 2026 12:52:30 INFO  valid result: 
+recall@1 : 0.08622    recall@5 : 0.20633    recall@10 : 0.28181    recall@20 : 0.3644    mrr@1 : 0.08622    mrr@5 : 0.12987    mrr@10 : 0.13995    mrr@20 : 0.14572    ndcg@1 : 0.08622    ndcg@5 : 0.14888    ndcg@10 : 0.17329    ndcg@20 : 0.19422    gauc : 0.95597
+Fri 28 Aug 2026 12:52:30 INFO  Saving current: saved\TMESASRec-Aug-28-2026_11-44-06.pth
+Fri 28 Aug 2026 12:53:54 INFO  epoch 51 training [time: 83.99s, train loss: 20949.4628]
+Fri 28 Aug 2026 12:53:54 INFO  epoch 51 evaluating [time: 0.68s, valid_score: 0.271480]
+Fri 28 Aug 2026 12:53:54 INFO  valid result: 
+recall@1 : 0.07268    recall@5 : 0.19406    recall@10 : 0.27148    recall@20 : 0.35212    mrr@1 : 0.07268    mrr@5 : 0.11526    mrr@10 : 0.12532    mrr@20 : 0.1309    ndcg@1 : 0.07268    ndcg@5 : 0.13475    ndcg@10 : 0.15952    ndcg@20 : 0.17988    gauc : 0.95489
+Fri 28 Aug 2026 12:55:15 INFO  epoch 52 training [time: 80.34s, train loss: 20952.5190]
+Fri 28 Aug 2026 12:55:15 INFO  epoch 52 evaluating [time: 0.68s, valid_score: 0.268690]
+Fri 28 Aug 2026 12:55:15 INFO  valid result: 
+recall@1 : 0.07213    recall@5 : 0.19517    recall@10 : 0.26869    recall@20 : 0.3531    mrr@1 : 0.07213    mrr@5 : 0.11519    mrr@10 : 0.12499    mrr@20 : 0.13083    ndcg@1 : 0.07213    ndcg@5 : 0.13497    ndcg@10 : 0.15873    ndcg@20 : 0.18005    gauc : 0.95543
+Fri 28 Aug 2026 12:56:35 INFO  epoch 53 training [time: 79.74s, train loss: 20938.5659]
+Fri 28 Aug 2026 12:56:36 INFO  epoch 53 evaluating [time: 0.67s, valid_score: 0.268690]
+Fri 28 Aug 2026 12:56:36 INFO  valid result: 
+recall@1 : 0.0798    recall@5 : 0.1981    recall@10 : 0.26869    recall@20 : 0.35366    mrr@1 : 0.0798    mrr@5 : 0.1217    mrr@10 : 0.13103    mrr@20 : 0.13689    ndcg@1 : 0.0798    ndcg@5 : 0.14062    ndcg@10 : 0.16335    ndcg@20 : 0.18479    gauc : 0.95481
+Fri 28 Aug 2026 12:57:55 INFO  epoch 54 training [time: 79.27s, train loss: 20932.0754]
+Fri 28 Aug 2026 12:57:56 INFO  epoch 54 evaluating [time: 0.62s, valid_score: 0.276790]
+Fri 28 Aug 2026 12:57:56 INFO  valid result: 
+recall@1 : 0.08133    recall@5 : 0.20033    recall@10 : 0.27679    recall@20 : 0.35965    mrr@1 : 0.08133    mrr@5 : 0.12233    mrr@10 : 0.13245    mrr@20 : 0.13824    ndcg@1 : 0.08133    ndcg@5 : 0.14159    ndcg@10 : 0.16623    ndcg@20 : 0.18724    gauc : 0.95584
+Fri 28 Aug 2026 12:59:13 INFO  epoch 55 training [time: 77.33s, train loss: 20926.7929]
+Fri 28 Aug 2026 12:59:14 INFO  epoch 55 evaluating [time: 0.61s, valid_score: 0.279990]
+Fri 28 Aug 2026 12:59:14 INFO  valid result: 
+recall@1 : 0.08315    recall@5 : 0.20522    recall@10 : 0.27999    recall@20 : 0.36593    mrr@1 : 0.08315    mrr@5 : 0.12734    mrr@10 : 0.13733    mrr@20 : 0.14322    ndcg@1 : 0.08315    ndcg@5 : 0.14668    ndcg@10 : 0.17087    ndcg@20 : 0.1925    gauc : 0.95703
+Fri 28 Aug 2026 13:00:31 INFO  epoch 56 training [time: 77.11s, train loss: 20924.9183]
+Fri 28 Aug 2026 13:00:31 INFO  epoch 56 evaluating [time: 0.62s, valid_score: 0.276370]
+Fri 28 Aug 2026 13:00:31 INFO  valid result: 
+recall@1 : 0.07799    recall@5 : 0.1995    recall@10 : 0.27637    recall@20 : 0.35868    mrr@1 : 0.07799    mrr@5 : 0.12096    mrr@10 : 0.13103    mrr@20 : 0.13664    ndcg@1 : 0.07799    ndcg@5 : 0.14042    ndcg@10 : 0.16508    ndcg@20 : 0.18576    gauc : 0.95578
+Fri 28 Aug 2026 13:01:49 INFO  epoch 57 training [time: 77.07s, train loss: 20919.7902]
+Fri 28 Aug 2026 13:01:49 INFO  epoch 57 evaluating [time: 0.61s, valid_score: 0.266460]
+Fri 28 Aug 2026 13:01:49 INFO  valid result: 
+recall@1 : 0.07366    recall@5 : 0.19615    recall@10 : 0.26646    recall@20 : 0.34835    mrr@1 : 0.07366    mrr@5 : 0.11802    mrr@10 : 0.1273    mrr@20 : 0.13289    ndcg@1 : 0.07366    ndcg@5 : 0.13742    ndcg@10 : 0.16005    ndcg@20 : 0.18064    gauc : 0.95494
+Fri 28 Aug 2026 13:03:07 INFO  epoch 58 training [time: 77.75s, train loss: 20910.9111]
+Fri 28 Aug 2026 13:03:08 INFO  epoch 58 evaluating [time: 0.63s, valid_score: 0.263530]
+Fri 28 Aug 2026 13:03:08 INFO  valid result: 
+recall@1 : 0.07352    recall@5 : 0.19322    recall@10 : 0.26353    recall@20 : 0.34919    mrr@1 : 0.07352    mrr@5 : 0.11536    mrr@10 : 0.12468    mrr@20 : 0.13067    ndcg@1 : 0.07352    ndcg@5 : 0.13462    ndcg@10 : 0.1573    ndcg@20 : 0.17901    gauc : 0.95362
+Fri 28 Aug 2026 13:04:27 INFO  epoch 59 training [time: 79.57s, train loss: 20906.3303]
+Fri 28 Aug 2026 13:04:28 INFO  epoch 59 evaluating [time: 0.68s, valid_score: 0.265070]
+Fri 28 Aug 2026 13:04:28 INFO  valid result: 
+recall@1 : 0.07938    recall@5 : 0.19545    recall@10 : 0.26507    recall@20 : 0.35477    mrr@1 : 0.07938    mrr@5 : 0.12053    mrr@10 : 0.12975    mrr@20 : 0.13599    ndcg@1 : 0.07938    ndcg@5 : 0.13909    ndcg@10 : 0.16153    ndcg@20 : 0.18422    gauc : 0.95472
+Fri 28 Aug 2026 13:05:48 INFO  epoch 60 training [time: 79.76s, train loss: 20898.6857]
+Fri 28 Aug 2026 13:05:48 INFO  epoch 60 evaluating [time: 0.71s, valid_score: 0.263670]
+Fri 28 Aug 2026 13:05:48 INFO  valid result: 
+recall@1 : 0.0731    recall@5 : 0.18973    recall@10 : 0.26367    recall@20 : 0.34863    mrr@1 : 0.0731    mrr@5 : 0.11469    mrr@10 : 0.1244    mrr@20 : 0.13024    ndcg@1 : 0.0731    ndcg@5 : 0.13328    ndcg@10 : 0.15703    ndcg@20 : 0.17844    gauc : 0.95499
+Fri 28 Aug 2026 13:07:08 INFO  epoch 61 training [time: 79.29s, train loss: 20895.6417]
+Fri 28 Aug 2026 13:07:08 INFO  epoch 61 evaluating [time: 0.66s, valid_score: 0.272180]
+Fri 28 Aug 2026 13:07:08 INFO  valid result: 
+recall@1 : 0.07715    recall@5 : 0.19685    recall@10 : 0.27218    recall@20 : 0.35379    mrr@1 : 0.07715    mrr@5 : 0.12105    mrr@10 : 0.13111    mrr@20 : 0.13674    ndcg@1 : 0.07715    ndcg@5 : 0.13992    ndcg@10 : 0.16428    ndcg@20 : 0.18487    gauc : 0.95532
+Fri 28 Aug 2026 13:07:08 INFO  Finished training, best eval result in epoch 50
+Fri 28 Aug 2026 13:07:09 INFO  Loading model structure and parameters from saved\TMESASRec-Aug-28-2026_11-44-06.pth
+Fri 28 Aug 2026 13:07:10 INFO  The running environment of this training is as follows:
++-------------+----------------+
+| Environment |     Usage      |
++=============+================+
+| CPU         |    13.80 %     |
++-------------+----------------+
+| GPU         | 0.42 G/8.00 G  |
++-------------+----------------+
+| Memory      | 0.74 G/15.73 G |
++-------------+----------------+
+Fri 28 Aug 2026 13:07:10 INFO  best valid : OrderedDict([('recall@1', 0.08622), ('recall@5', 0.20633), ('recall@10', 0.28181), ('recall@20', 0.3644), ('mrr@1', 0.08622), ('mrr@5', 0.12987), ('mrr@10', 0.13995), ('mrr@20', 0.14572), ('ndcg@1', 0.08622), ('ndcg@5', 0.14888), ('ndcg@10', 0.17329), ('ndcg@20', 0.19422), ('gauc', 0.95597)])
+Fri 28 Aug 2026 13:07:10 INFO  test result: OrderedDict([('recall@1', 0.07224), ('recall@5', 0.19607), ('recall@10', 0.2637), ('recall@20', 0.34179), ('mrr@1', 0.07224), ('mrr@5', 0.11595), ('mrr@10', 0.125), ('mrr@20', 0.13043), ('ndcg@1', 0.07224), ('ndcg@5', 0.13578), ('ndcg@10', 0.15768), ('ndcg@20', 0.17744), ('gauc', 0.94422)])
