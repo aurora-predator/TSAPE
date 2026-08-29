@@ -1,0 +1,17 @@
+*.idea
+idea
+_pycache__
+__pycache__
+
+# 大文件 / 训练产物（不上传 GitHub）
+checkpoints/
+dataset/
+log/
+log_tensorboard/
+saved/
+*.pth
+
+# 编辑器与误生成文件
+.vscode/
+git
+master
